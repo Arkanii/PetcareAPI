@@ -1,0 +1,17 @@
+services:
+  nest-postgres:
+    ports:
+      - "5432"
+
+  nest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    container_name: nest-api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - nest-postgres
