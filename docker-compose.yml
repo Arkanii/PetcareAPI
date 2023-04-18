@@ -1,6 +1,6 @@
 services:
   nest-postgres:
-    image: postgres:14-alpine
+    image: postgres:15-alpine
     container_name: nest-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

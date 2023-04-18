@@ -21,23 +21,23 @@ model User {
 
 model PetOwner {
   id        Int     @id @default(autoincrement())
-  firstName String
-  lastName  String
+  gender    String?
+  firstName String?
+  lastName  String?
   address   String?
   zipCode   String?
   city      String?
+  country   String? @db.Char(3)
   phone     String?
   user      User    @relation(fields: [userId], references: [id])
   userId    Int     @unique
-  Pet       Pet[]
+  pets      Pet[]
 }
 
 model Pet {
   id                   Int                 @id @default(autoincrement())
-  petOwner             PetOwner            @relation(fields: [petOwnerId], references: [id])
-  petOwnerId           Int
   specie               String?
-  gender               Gender?
+  gender               PetGender?
   name                 String?
   breed                String?
   coat                 String?
@@ -53,9 +53,11 @@ model Pet {
   description          String?
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
+  petOwner             PetOwner            @relation(fields: [petOwnerId], references: [id])
+  petOwnerId           Int
 }
 
-enum Gender {
+enum PetGender {
   male
   female
 }

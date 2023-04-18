@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Gender" AS ENUM ('male', 'female');
+CREATE TYPE "PetGender" AS ENUM ('male', 'female');
 
 -- CreateEnum
 CREATE TYPE "IdentificationType" AS ENUM ('tattoo', 'puce');
@@ -18,11 +18,13 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "PetOwner" (
     "id" SERIAL NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "gender" TEXT,
+    "firstName" TEXT,
+    "lastName" TEXT,
     "address" TEXT,
     "zipCode" TEXT,
     "city" TEXT,
+    "country" CHAR(3),
     "phone" TEXT,
     "userId" INTEGER NOT NULL,
 
@@ -32,9 +34,8 @@ CREATE TABLE "PetOwner" (
 -- CreateTable
 CREATE TABLE "Pet" (
     "id" SERIAL NOT NULL,
-    "petOwnerId" INTEGER NOT NULL,
     "specie" TEXT,
-    "gender" "Gender",
+    "gender" "PetGender",
     "name" TEXT,
     "breed" TEXT,
     "coat" TEXT,
@@ -50,6 +51,7 @@ CREATE TABLE "Pet" (
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "petOwnerId" INTEGER NOT NULL,
 
     CONSTRAINT "Pet_pkey" PRIMARY KEY ("id")
 );
