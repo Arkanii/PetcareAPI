@@ -10,11 +10,17 @@ import {
 import { PetsService } from './pets.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PetEntity } from './entities/pet.entity';
 
 @Controller('pets')
 @ApiTags('pets')
+@ApiBearerAuth()
 export class PetsController {
   constructor(private readonly petsService: PetsService) {}
 

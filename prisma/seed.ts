@@ -5,11 +5,12 @@ import {
   IdentificationType,
 } from '@prisma/client';
 import { faker } from '@faker-js/faker/locale/fr';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const mainUser = generateMainUser();
+  const mainUser = await generateMainUser();
 
   await prisma.user.upsert({
     where: {
@@ -19,7 +20,7 @@ async function main() {
     create: mainUser,
   });
 
-  for (const user of generateUsers(
+  for (const user of await generateUsers(
     faker.datatype.number({ min: 40, max: 50 }),
   )) {
     await prisma.user.upsert({
@@ -32,10 +33,10 @@ async function main() {
   }
 }
 
-function generateMainUser(): Prisma.UserCreateInput {
+async function generateMainUser(): Promise<Prisma.UserCreateInput> {
   return {
     email: 'user@pet.care',
-    password: 'user@pet.care',
+    password: await bcrypt.hash('user@pet.care', 10),
     petOwner: {
       create: generatePetOwner(
         faker.name.sexType(),
@@ -46,7 +47,9 @@ function generateMainUser(): Prisma.UserCreateInput {
   };
 }
 
-function generateUsers(number: number): Prisma.UserCreateInput[] {
+async function generateUsers(
+  number: number,
+): Promise<Prisma.UserCreateInput[]> {
   const users: Prisma.UserCreateInput[] = [];
 
   for (let i = 0; i < number; i++) {
@@ -57,7 +60,7 @@ function generateUsers(number: number): Prisma.UserCreateInput[] {
 
     users.push({
       email: email,
-      password: email,
+      password: await bcrypt.hash(email, 10),
       petOwner: {
         create: generatePetOwner(gender, firstName, lastName),
       },
