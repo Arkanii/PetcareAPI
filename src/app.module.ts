@@ -10,16 +10,18 @@ import jwtConfig from './config/jwt.config';
 
 @Module({
   imports: [
-    PrismaModule.forRoot(),
+    PrismaModule.forRoot({
+      isGlobal: true,
+    }),
     ConfigModule.forRoot({
       load: [appConfig, jwtConfig],
       isGlobal: true,
       expandVariables: true,
     }),
-    UsersModule,
+    AuthModule,
     PetOwnersModule,
     PetsModule,
-    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
