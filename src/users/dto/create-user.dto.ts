@@ -16,7 +16,7 @@ export default class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsStrongPassword()
+  @IsStrongPassword({ minNumbers: 0 })
   @IsString()
   password: string;
 }

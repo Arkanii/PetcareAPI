@@ -3,7 +3,7 @@ import { Exclude } from 'class-transformer';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { PetOwnerEntity } from '../../pet-owners/entities/pet-owner.entity';
+import PetOwnerEntity from '../../pet-owners/entities/pet-owner.entity';
 
 export default class UserEntity implements User {
   constructor({ petOwner, ...data }: Partial<UserEntity>) {

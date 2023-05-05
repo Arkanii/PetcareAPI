@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+import CreateUserDto from '../users/dto/create-user.dto';
 import UserEntity from '../users/entities/user.entity';
 import UsersService from '../users/users.service';
 import AuthService from './auth.service';
@@ -21,6 +22,15 @@ export default class AuthController {
   @ApiOkResponse({ type: AuthEntity })
   login(@Body() { email, password }: LoginDto) {
     return this.authService.login(email, password);
+  }
+
+  @Public()
+  @Post('register')
+  @ApiOkResponse({ type: AuthEntity })
+  async register(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.create(createUserDto);
+
+    return this.authService.generateAccessToken(user.id);
   }
 
   @Get('me')

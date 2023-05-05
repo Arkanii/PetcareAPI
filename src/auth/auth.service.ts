@@ -36,7 +36,11 @@ export default class AuthService {
 
     // Step 3: Generate a JWT containing the user's ID and return it
     return {
-      accessToken: this.jwtService.sign({ userId: user.id }),
+      accessToken: this.generateAccessToken(user.id),
     };
+  }
+
+  generateAccessToken(userId: number): string {
+    return this.jwtService.sign({ userId });
   }
 }

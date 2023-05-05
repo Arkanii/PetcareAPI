@@ -15,6 +15,9 @@ export default class UsersService {
       data: {
         ...createUserDto,
         password: await bcrypt.hash(createUserDto.password, 10),
+        petOwner: {
+          create: {},
+        },
       },
     });
   }
