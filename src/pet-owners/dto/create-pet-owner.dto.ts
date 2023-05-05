@@ -1,7 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsISO31661Alpha3, IsPhoneNumber, IsString } from 'class-validator';
 
-export class CreatePetOwnerDto {
+import { ApiProperty } from '@nestjs/swagger';
+
+export default class CreatePetOwnerDto {
   @ApiProperty({ required: false, nullable: true })
   @IsString()
   gender: string | null;

@@ -1,27 +1,28 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { PetOwnersService } from './pet-owners.service';
-import { CreatePetOwnerDto } from './dto/create-pet-owner.dto';
-import { UpdatePetOwnerDto } from './dto/update-pet-owner.dto';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PetOwnerEntity } from './entities/pet-owner.entity';
+
+import CreatePetOwnerDto from './dto/create-pet-owner.dto';
+import UpdatePetOwnerDto from './dto/update-pet-owner.dto';
+import PetOwnerEntity from './entities/pet-owner.entity';
+import PetOwnersService from './pet-owners.service';
 
 @Controller('petOwners')
 @ApiTags('petOwners')
 @ApiBearerAuth()
-export class PetOwnersController {
+export default class PetOwnersController {
   constructor(private readonly petOwnersService: PetOwnersService) {}
 
   @Post()

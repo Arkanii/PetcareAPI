@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IdentificationType, PetGender } from '@prisma/client';
 import { IsBoolean, IsDate, IsIn, IsString, IsUrl } from 'class-validator';
 
-export class CreatePetDto {
+import { ApiProperty } from '@nestjs/swagger';
+
+export default class CreatePetDto {
   @ApiProperty({ required: false, nullable: true })
   @IsString()
   specie: string | null;

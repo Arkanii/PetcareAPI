@@ -1,10 +1,12 @@
+import helmet from 'helmet';
+import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
-import { ConfigService } from '@nestjs/config';
-import helmet from 'helmet';
+
+import AppModule from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +16,11 @@ async function bootstrap() {
   const prismaService: PrismaService = app.get(PrismaService);
   const configService = app.get(ConfigService);
 
+  app.enableCors();
+  app.use(helmet());
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,11 +28,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
-  app.use(helmet());
-  app.enableCors();
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   SwaggerModule.setup(
     '',
@@ -38,10 +40,15 @@ async function bootstrap() {
         .addBearerAuth()
         .build(),
     ),
+    {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    },
   );
 
   await prismaService.enableShutdownHooks(app);
   await app.listen(configService.get<number>('app.port'));
 }
 
-void bootstrap();
+bootstrap();

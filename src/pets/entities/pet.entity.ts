@@ -1,7 +1,8 @@
-import { Pet, PetGender, IdentificationType } from '@prisma/client';
+import { IdentificationType, Pet, PetGender } from '@prisma/client';
+
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PetEntity implements Pet {
+export default class PetEntity implements Pet {
   constructor(partial: Partial<PetEntity>) {
     Object.assign(this, partial);
   }

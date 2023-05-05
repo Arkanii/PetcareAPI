@@ -1,15 +1,16 @@
 import { Body, Controller, Get, Post, Request } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './dto/login.dto';
-import { AuthEntity } from './entities/auth.entity';
+
+import UserEntity from '../users/entities/user.entity';
+import UsersService from '../users/users.service';
+import AuthService from './auth.service';
+import LoginDto from './dto/login.dto';
+import AuthEntity from './entities/auth.entity';
 import { Public } from './public.decorator';
-import { UsersService } from '../users/users.service';
-import { UserEntity } from '../users/entities/user.entity';
 
 @Controller('auth')
 @ApiTags('auth')
-export class AuthController {
+export default class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,

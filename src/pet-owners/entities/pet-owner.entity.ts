@@ -1,8 +1,9 @@
 import { PetOwner } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
-export class PetOwnerEntity implements PetOwner {
+import { ApiProperty } from '@nestjs/swagger';
+
+export default class PetOwnerEntity implements PetOwner {
   constructor(partial: Partial<PetOwnerEntity>) {
     Object.assign(this, partial);
   }

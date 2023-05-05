@@ -1,9 +1,11 @@
 import { User } from '@prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+
+import { ApiProperty } from '@nestjs/swagger';
+
 import { PetOwnerEntity } from '../../pet-owners/entities/pet-owner.entity';
 
-export class UserEntity implements User {
+export default class UserEntity implements User {
   constructor({ petOwner, ...data }: Partial<UserEntity>) {
     Object.assign(this, data);
     if (petOwner) {

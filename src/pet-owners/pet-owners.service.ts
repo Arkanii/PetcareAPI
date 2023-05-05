@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePetOwnerDto } from './dto/create-pet-owner.dto';
-import { UpdatePetOwnerDto } from './dto/update-pet-owner.dto';
 import { PrismaService } from 'nestjs-prisma';
 
+import { Injectable } from '@nestjs/common';
+
+import CreatePetOwnerDto from './dto/create-pet-owner.dto';
+import UpdatePetOwnerDto from './dto/update-pet-owner.dto';
+
 @Injectable()
-export class PetOwnersService {
+export default class PetOwnersService {
   constructor(private prisma: PrismaService) {}
 
   create(createPetOwnerDto: CreatePetOwnerDto) {

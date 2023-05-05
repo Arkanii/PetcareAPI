@@ -1,12 +1,14 @@
-import { Module } from '@nestjs/common';
 import { PrismaModule } from 'nestjs-prisma';
-import { UsersModule } from './users/users.module';
-import { PetOwnersModule } from './pet-owners/pet-owners.module';
-import { PetsModule } from './pets/pets.module';
-import { AuthModule } from './auth/auth.module';
+
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
+import AuthModule from './auth/auth.module';
 import appConfig from './config/app.config';
 import jwtConfig from './config/jwt.config';
+import PetOwnersModule from './pet-owners/pet-owners.module';
+import PetsModule from './pets/pets.module';
+import UsersModule from './users/users.module';
 
 @Module({
   imports: [
@@ -24,4 +26,4 @@ import jwtConfig from './config/jwt.config';
     UsersModule,
   ],
 })
-export class AppModule {}
+export default class AppModule {}
