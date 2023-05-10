@@ -20,17 +20,15 @@ export default class AuthController {
   @Public()
   @Post('login')
   @ApiOkResponse({ type: AuthEntity })
-  login(@Body() { email, password }: LoginDto) {
-    return this.authService.login(email, password);
+  async login(@Body() { email, password }: LoginDto) {
+    return new AuthEntity(await this.authService.login(email, password));
   }
 
   @Public()
   @Post('register')
   @ApiOkResponse({ type: AuthEntity })
   async register(@Body() createUserDto: CreateUserDto) {
-    const user = await this.userService.create(createUserDto);
-
-    return this.authService.generateAccessToken(user.id);
+    return new AuthEntity(await this.authService.register(createUserDto));
   }
 
   @Get('me')

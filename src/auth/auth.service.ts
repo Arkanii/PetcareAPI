@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import ms, { StringValue } from 'ms';
 import { PrismaService } from 'nestjs-prisma';
 
 import {
@@ -6,15 +7,20 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
+import CreateUserDto from '../users/dto/create-user.dto';
+import UsersService from '../users/users.service';
 import AuthEntity from './entities/auth.entity';
 
 @Injectable()
 export default class AuthService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private readonly userService: UsersService,
   ) {}
 
   async login(email: string, password: string): Promise<AuthEntity> {
@@ -36,11 +42,27 @@ export default class AuthService {
 
     // Step 3: Generate a JWT containing the user's ID and return it
     return {
+      expireAt: new Date(
+        Date.now() +
+          ms(this.configService.get<StringValue>('jwt.expiration_time')),
+      ),
       accessToken: this.generateAccessToken(user.id),
     };
   }
 
-  generateAccessToken(userId: number): string {
+  async register(createUserDto: CreateUserDto): Promise<AuthEntity> {
+    const user = await this.userService.create(createUserDto);
+
+    return {
+      expireAt: new Date(
+        Date.now() +
+          ms(this.configService.get<StringValue>('jwt.expiration_time')),
+      ),
+      accessToken: this.generateAccessToken(user.id),
+    };
+  }
+
+  private generateAccessToken(userId: number): string {
     return this.jwtService.sign({ userId });
   }
 }

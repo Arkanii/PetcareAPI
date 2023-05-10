@@ -1,3 +1,5 @@
+import { StringValue } from 'ms';
+
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
@@ -19,7 +21,7 @@ import JwtStrategy from './jwt.strategy';
         return {
           secret: config.get<string>('jwt.secret'),
           signOptions: {
-            expiresIn: config.get<string | number>('jwt.expiration_time'),
+            expiresIn: config.get<StringValue>('jwt.expiration_time'),
           },
         };
       },
