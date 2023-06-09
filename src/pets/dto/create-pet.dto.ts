@@ -45,7 +45,7 @@ export default class CreatePetDto {
   @IsUrl()
   picture: string | null;
 
-  @ApiProperty({ required: false, nullable: true })
+  @ApiProperty({ required: false, nullable: true, enum: IdentificationType })
   @IsOptional()
   @IsIn(Object.keys(IdentificationType))
   identificationType: IdentificationType | null;
