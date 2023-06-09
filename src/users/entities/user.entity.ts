@@ -31,9 +31,6 @@ export default class UserEntity implements User {
   @ApiProperty()
   updatedAt: Date;
 
-  @ApiProperty({ required: false, nullable: true })
-  petOwnerId: number | null;
-
   @ApiProperty({ required: false, type: PetOwnerEntity })
   petOwner?: PetOwnerEntity;
 }

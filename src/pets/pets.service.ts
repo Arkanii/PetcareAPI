@@ -2,6 +2,7 @@ import { PrismaService } from 'nestjs-prisma';
 
 import { Injectable } from '@nestjs/common';
 
+import PetOwnerEntity from '../pet-owners/entities/pet-owner.entity';
 import CreatePetDto from './dto/create-pet.dto';
 import UpdatePetDto from './dto/update-pet.dto';
 
@@ -9,30 +10,42 @@ import UpdatePetDto from './dto/update-pet.dto';
 export default class PetsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createPetDto: CreatePetDto) {
+  create(createPetDto: CreatePetDto, petOwner: PetOwnerEntity) {
     return this.prisma.pet.create({
-      data: { ...createPetDto, petOwnerId: 1 },
+      data: { ...createPetDto, petOwnerId: petOwner.id },
     });
   }
 
-  findAll() {
-    return this.prisma.pet.findMany();
+  findAll(petOwner: PetOwnerEntity) {
+    return this.prisma.pet.findMany({
+      where: { petOwnerId: petOwner.id },
+    });
   }
 
-  findOne(id: number) {
-    return this.prisma.pet.findUniqueOrThrow({ where: { id } });
+  findOne(id: number, petOwner: PetOwnerEntity) {
+    return this.prisma.pet.findFirstOrThrow({
+      where: { id, petOwnerId: petOwner.id },
+    });
   }
 
-  update(id: number, updatePetDto: UpdatePetDto) {
+  async update(
+    id: number,
+    updatePetDto: UpdatePetDto,
+    petOwner: PetOwnerEntity,
+  ) {
+    const pet = await this.findOne(id, petOwner);
+
     return this.prisma.pet.update({
-      where: { id },
+      where: { id: pet.id },
       data: updatePetDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number, petOwner: PetOwnerEntity) {
+    const pet = await this.findOne(id, petOwner);
+
     return this.prisma.pet.delete({
-      where: { id },
+      where: { id: pet.id },
     });
   }
 }
