@@ -23,6 +23,9 @@ export default class UserEntity implements User {
   password: string;
 
   @ApiProperty()
+  roles: string[];
+
+  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()
