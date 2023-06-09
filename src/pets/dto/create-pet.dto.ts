@@ -1,5 +1,11 @@
 import { IdentificationType, PetGender } from '@prisma/client';
-import { IsDate, IsIn, IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsDateString,
+  IsIn,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -37,7 +43,7 @@ export default class CreatePetDto {
 
   @ApiProperty({ required: false, nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   birthDate: Date | null;
 
   @ApiProperty({ required: false, nullable: true })
@@ -52,7 +58,7 @@ export default class CreatePetDto {
 
   @ApiProperty({ required: false, nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   identificationDate: Date | null;
 
   @ApiProperty({ required: false, nullable: true })

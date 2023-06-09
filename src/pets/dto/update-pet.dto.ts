@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsOptional } from 'class-validator';
+import { IsBoolean, IsDateString, IsOptional } from 'class-validator';
 
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 
@@ -12,6 +12,6 @@ export default class UpdatePetDto extends PartialType(CreatePetDto) {
 
   @ApiProperty({ required: false, nullable: true })
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   deceaseDate: Date | null;
 }
