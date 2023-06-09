@@ -9,14 +9,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export default class CreateUserDto {
   @ApiProperty()
+  @IsString()
   @IsEmail()
   @IsNotEmpty()
-  @IsString()
   email: string;
 
   @ApiProperty()
+  @IsString()
   @IsNotEmpty()
   @IsStrongPassword({ minNumbers: 0 })
-  @IsString()
   password: string;
 }
